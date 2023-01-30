@@ -1,0 +1,60 @@
+name: build
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 2 * * 5'  # Every Friday at 2am
+jobs:
+  build:
+    name: build MB-System
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-22.04
+          - os: ubuntu-20.04
+          - os: ubuntu-18.04
+        # - os: macos-latest
+    runs-on: "${{ matrix.os }}"
+    steps:
+      - uses: actions/checkout@v3
+      - name: (Linux) Install build dependencies
+        if: "${{ runner.os == 'Linux' }}"
+        run: |-
+          sudo apt-get update
+          if [ "${{ matrix.os }}" = 'ubuntu-22.04' ]; then
+              sudo apt-get install --yes --no-install-recommends libvtk9-dev libvtk9-qt-dev
+          fi
+          sudo apt-get install --yes --no-install-recommends \
+              cmake              \
+              libfftw3-dev       \
+              libgdal-dev        \
+              libgl1-mesa-dev    \
+              libglu1-mesa-dev   \
+              libgmt-dev         \
+              libmotif-dev       \
+              libnetcdf-dev      \
+              libopencv-dev      \
+              libpcl-dev         \
+              libproj-dev        \
+              libtirpc-dev       \
+              libxt-dev          \
+              qtbase5-dev        \
+              qtdeclarative5-dev \
+      - name: (macOS) Install build dependencies
+        if: "${{ runner.os == 'macOS' }}"
+        run: |-
+          brew install ...
+      - name: Configure CMake
+        run: |-
+          if [ "${{ matrix.os }}" = 'ubuntu-22.04' ]; then
+             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DbuildOpenCV=1 -DbuildQt=1
+          elif [ "${{ matrix.os }}" = 'ubuntu-20.04' ]; then
+             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DbuildOpenCV=1 -DbuildQt=0
+          else
+             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DbuildOpenCV=0 -DbuildQt=0
+          fi
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --verbose
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest

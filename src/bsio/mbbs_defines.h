@@ -37,15 +37,15 @@
 #include <sys/time.h>
 #endif
 
-#include <mb_config.h>
-
 /* XDR i/o include file */
-#ifdef HAVE_RPC_RPC_H
-#include <rpc/rpc.h>
-#endif
-#ifdef HAVE_RPC_TYPES_H
-#include <rpc/types.h>
-#include <rpc/xdr.h>
+
+ /* For XDR/RPC */
+#ifndef _WIN32
+# include <rpc/rpc.h>
+# include <rpc/types.h>
+# include <rpc/xdr.h>
+#else
+# include "types_win32.h"
 #endif
 
 #ifdef _WIN32

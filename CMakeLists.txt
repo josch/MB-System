@@ -10,7 +10,6 @@ option(buildTRN "build MBTRN tools" OFF)
 option(buildTNav "build MBTNav tools" OFF)
 option(buildQt "build Qt tools" OFF)
 option(buildGSF "build GSF library" ON)
-option(buildTest "build test tools" OFF)
 
 if(help)
   message("specify OTPS install location with -DotpsDir=directory")
@@ -19,6 +18,7 @@ if(help)
   message("build Qt-based GUIs with -DbuildQt=1")
   message("build TRN software with -DbuildTRN=1")
   message("build shared/static libraries with -DBUILD_SHARED_LIBS=ON/OFF")
+  message("disable building tests with -DBUILD_TESTING=OFF")
   message(FATAL_ERROR "")
 endif()
 
@@ -40,8 +40,8 @@ message(
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/build-utils")
 
-# Use standard cache variables for installation
 include(GNUInstallDirs)
+include(CTest)
 
 # Utilities and libraries
 if(buildGSF)
@@ -87,4 +87,10 @@ endif()
 
 if(buildOpenCV)
   add_subdirectory(src/photo)
+endif()
+
+if(BUILD_TESTING)
+  add_subdirectory(test/mbio)
+  add_subdirectory(test/utilities)
+  add_subdirectory(test/deprecated)
 endif()

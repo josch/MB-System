@@ -22,7 +22,9 @@ jobs:
         run: |-
           sudo apt-get update
           if [ "${{ matrix.os }}" = 'ubuntu-22.04' ]; then
-              sudo apt-get install --yes --no-install-recommends libvtk9-dev libvtk9-qt-dev
+              sudo apt-get install --yes --no-install-recommends libvtk9-dev libvtk9-qt-dev libgmock-dev
+          elif [ "${{ matrix.os }}" = 'ubuntu-20.04' ]; then
+              sudo apt-get install --yes --no-install-recommends libgmock-dev
           fi
           sudo apt-get install --yes --no-install-recommends \
               cmake              \
@@ -47,11 +49,11 @@ jobs:
       - name: Configure CMake
         run: |-
           if [ "${{ matrix.os }}" = 'ubuntu-22.04' ]; then
-             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DbuildOpenCV=1 -DbuildQt=1
+             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DBUILD_TESTING=1 -DbuildOpenCV=1 -DbuildQt=1
           elif [ "${{ matrix.os }}" = 'ubuntu-20.04' ]; then
-             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DbuildOpenCV=1 -DbuildQt=0
+             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DBUILD_TESTING=1 -DbuildOpenCV=1 -DbuildQt=0
           else
-             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DbuildOpenCV=0 -DbuildQt=0
+             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DBUILD_TESTING=0 -DbuildOpenCV=0 -DbuildQt=0
           fi
       - name: Build
         run: cmake --build ${{github.workspace}}/build --verbose

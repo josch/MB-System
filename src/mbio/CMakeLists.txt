@@ -1,4 +1,9 @@
-find_package(TIRPC REQUIRED)
+if(CMAKE_SYSTEM_NAME STREQUAL Linux)
+  find_package(TIRPC REQUIRED)
+else()
+  add_library(TIRPC::TIRPC INTERFACE IMPORTED)
+endif()
+
 find_package(LibPROJ REQUIRED)
 find_package(NetCDF REQUIRED)
 

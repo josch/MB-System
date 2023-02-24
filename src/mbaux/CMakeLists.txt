@@ -1,5 +1,6 @@
 find_package(GDAL REQUIRED)
 find_package(GMT REQUIRED)
+find_package(X11 REQUIRED)
 
 add_library(
   mbaux
@@ -16,6 +17,6 @@ target_include_directories(mbaux PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(mbaux GMT::GMT GDAL::GDAL mbio)
 
 add_library(mbxgr mb_xgraphics.c)
-target_link_libraries(mbxgr GMT::GMT GDAL::GDAL mbio)
+target_link_libraries(mbxgr GMT::GMT GDAL::GDAL mbio X11::X11)
 
 install(TARGETS mbaux mbxgr DESTINATION ${CMAKE_INSTALL_LIBDIR})

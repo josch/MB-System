@@ -10,10 +10,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
-          - os: ubuntu-20.04
-          - os: ubuntu-18.04
-        # - os: macos-latest
+          #- os: ubuntu-22.04
+          #- os: ubuntu-20.04
+          #- os: ubuntu-18.04
+          - os: macos-12 # Monterey v12
     runs-on: "${{ matrix.os }}"
     steps:
       - uses: actions/checkout@v3
@@ -45,15 +45,26 @@ jobs:
       - name: (macOS) Install build dependencies
         if: "${{ runner.os == 'macOS' }}"
         run: |-
-          brew install ...
+          #brew install proj gdal netcdf fftw gmt openmotif
+          #brew install --cask xquartz
+          #wget https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.5/XQuartz-2.8.5.pkg
+          #sudo /usr/sbin/installer -pkg XQuartz-2.8.5.pkg -target /
+          wget https://github.com/macports/macports-base/releases/download/v2.8.1/MacPorts-2.8.1-12-Monterey.pkg
+          sudo /usr/sbin/installer -pkg MacPorts-2.8.1-12-Monterey.pkg -target /
+          sudo /opt/local/bin/port install mesa
+          sudo find / | grep glx
       - name: Configure CMake
         run: |-
           if [ "${{ matrix.os }}" = 'ubuntu-22.04' ]; then
-             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DBUILD_TESTING=1 -DbuildOpenCV=1 -DbuildQt=1
+             cmake -B ${{github.workspace}}/build -DbuildTRN=1 -DbuildPCL=1 -DBUILD_TESTING=1 -DbuildOpenCV=1 -DbuildQt=1
           elif [ "${{ matrix.os }}" = 'ubuntu-20.04' ]; then
-             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DBUILD_TESTING=1 -DbuildOpenCV=1 -DbuildQt=0
-          else
-             cmake -B ${{github.workspace}}/build -DbuildPCL=1 -DBUILD_TESTING=0 -DbuildOpenCV=0 -DbuildQt=0
+             cmake -B ${{github.workspace}}/build -DbuildTRN=1 -DbuildPCL=1 -DBUILD_TESTING=1 -DbuildOpenCV=1 -DbuildQt=0
+          elif [ "${{ matrix.os }}" = 'ubuntu-18.04' ]; then
+             cmake -B ${{github.workspace}}/build -DbuildTRN=1 -DbuildPCL=1 -DBUILD_TESTING=0 -DbuildOpenCV=0 -DbuildQt=0
+          elif [ "${{ runner.os }}" = 'macOS' ]; then
+             ls -lha /opt/X11/lib/ /opt/X11/lib/libGL.dylib /opt/X11/lib/libGLU.dylib /opt/X11/include/GL /opt/X11/lib/xorg/modules/extensions/libglx.dylib
+             file /opt/X11/lib/libGL.dylib /opt/X11/lib/xorg/modules/extensions/libglx.dylib
+             cmake -B ${{github.workspace}}/build -DOPENGL_opengl_LIBRARY:FILEPATH=/opt/X11/lib/libGL.dylib -DOPENGL_gl_LIBRARY:FILEPATH=/opt/X11/lib/libGL.dylib -DOPENGL_glu_LIBRARY:FILEPATH=/opt/X11/lib/libGLU.dylib -DOPENGL_INCLUDE_DIR:PATH=/opt/X11/include -DOPENGL_glx_LIBRARY:FILEPATH=/opt/X11/lib/xorg/modules/extensions/libglx.dylib -DOPENGL_GLX_INCLUDE_DIR:PATH=/opt/X11/include -DbuildTRN=1 -DbuildPCL=0 -DBUILD_TESTING=0 -DbuildOpenCV=0 -DbuildQt=0
           fi
       - name: Build
         run: cmake --build ${{github.workspace}}/build --verbose

@@ -55,14 +55,8 @@ add_subdirectory(src/bsio)
 add_subdirectory(src/surf)
 
 if(buildTRN)
+  add_subdirectory(src/mbtrnframe)
   add_subdirectory(src/mbtrn)
-  # Some executables get linked with TRN libraries in this case
-  set(R7KR_LIB r7kr)
-  set(MFRAME_LIB mframe)
-else()
-  # Not building TRN libraries
-  set(R7KR_LIB "")
-  set(MFRAME_LIB "")
 endif()
 
 # Executables

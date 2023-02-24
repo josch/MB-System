@@ -32,6 +32,7 @@ if(UNIX AND NOT GMT_FOUND)
     HINTS ${GMT_DIR} ${GMT_ROOT} $ENV{GMT_DIR} $ENV{GMT_ROOT}
     PATH_SUFFIXES bin
     PATHS /sw # Fink
+          /opt/sw # Fink
           /opt/local # DarwinPorts
           /opt/csw # Blastwave
           /opt
@@ -72,6 +73,7 @@ find_path(
   HINTS ${_gmt_includepath} ${GMT_DIR} ${GMT_ROOT} $ENV{GMT_DIR} $ENV{GMT_ROOT}
   PATH_SUFFIXES include/gmt include
   PATHS /sw # Fink
+        /opt/sw # Fink
         /opt/local # DarwinPorts
         /opt/csw # Blastwave
         /opt
@@ -82,7 +84,7 @@ find_library(
   NAMES gmt
   HINTS ${_gmt_libpath} ${GMT_DIR} ${GMT_ROOT} $ENV{GMT_DIR} $ENV{GMT_ROOT}
   PATH_SUFFIXES lib
-  PATHS /sw /opt/local /opt/csw /opt /usr/local)
+  PATHS /sw /opt/sw /opt/local /opt/csw /opt /usr/local)
 
 # find all libs that gmt-config reports
 foreach(_extralib ${_gmt_lib})

@@ -1,3 +1,5 @@
+find_package(X11 REQUIRED)
+find_package(Motif REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_library(
@@ -25,6 +27,6 @@ add_library(
   mbview_vector.c)
 
 target_include_directories(mbview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(mbview PRIVATE OpenGL::GL OpenGL::GLU mbio)
+target_link_libraries(mbview PRIVATE OpenGL::GL OpenGL::GLU mbio Motif::Motif X11::Xt)
 
 install(TARGETS mbview DESTINATION ${CMAKE_INSTALL_LIBDIR})

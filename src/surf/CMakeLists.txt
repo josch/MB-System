@@ -1,4 +1,8 @@
-find_package(TIRPC REQUIRED)
+if(CMAKE_SYSTEM_NAME STREQUAL Linux)
+  find_package(TIRPC REQUIRED)
+else()
+  add_library(TIRPC::TIRPC INTERFACE IMPORTED)
+endif()
 
 add_library(
   mbsapi

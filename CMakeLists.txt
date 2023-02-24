@@ -32,6 +32,10 @@ endif()
 set(levitusDir ${CMAKE_INSTALL_PREFIX}/share/mbsystem)
 
 message("CMAKE_C_COMPILER_ID: ${CMAKE_C_COMPILER_ID}")
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 message("CMAKE_SYSTEM_PREFIX_PATH: ${CMAKE_SYSTEM_PREFIX_PATH}")
 message(
@@ -55,14 +59,8 @@ add_subdirectory(src/bsio)
 add_subdirectory(src/surf)
 
 if(buildTRN)
+  add_subdirectory(src/mbtrnframe)
   add_subdirectory(src/mbtrn)
-  # Some executables get linked with TRN libraries in this case
-  set(R7KR_LIB r7kr)
-  set(MFRAME_LIB mframe)
-else()
-  # Not building TRN libraries
-  set(R7KR_LIB "")
-  set(MFRAME_LIB "")
 endif()
 
 # Executables

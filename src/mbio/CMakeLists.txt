@@ -164,6 +164,7 @@ if(buildGSF)
 endif()
 
 add_library(mbio ${SRC})
+set_target_properties(mbio PROPERTIES VERSION "0" SOVERSION "0")
 if(LibPROJ_VERSION VERSION_LESS 5)
   target_compile_definitions(
     mbio PRIVATE USE_PROJ4_API=1

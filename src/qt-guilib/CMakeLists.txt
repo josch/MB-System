@@ -33,6 +33,7 @@ set(src
     resources.qrc)
 
 add_library(MBGui ${src})
+set_target_properties(MBGui PROPERTIES VERSION "0" SOVERSION "0")
 target_include_directories(MBGui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(
   MBGui

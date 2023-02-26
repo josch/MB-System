@@ -13,6 +13,7 @@ add_library(
   mb_truecont.c
   mb_zgrid.c)
 
+set_target_properties(mbaux PROPERTIES VERSION "0" SOVERSION "0")
 target_include_directories(mbaux PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(mbaux GMT::GMT GDAL::GDAL mbio)
 

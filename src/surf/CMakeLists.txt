@@ -15,6 +15,7 @@ add_library(
   util_surf.c
   xdr_surf.c)
 
+set_target_properties(mbsapi PROPERTIES VERSION "0" SOVERSION "0")
 target_include_directories(mbbsio PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(mbsapi PUBLIC TIRPC::TIRPC)
 

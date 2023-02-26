@@ -26,7 +26,8 @@ add_library(
   mbview_plot.c
   mbview_vector.c)
 
+set_target_properties(mbview PROPERTIES VERSION "0" SOVERSION "0")
 target_include_directories(mbview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(mbview PRIVATE OpenGL::GL OpenGL::GLU mbio Motif::Motif X11::Xt)
+target_link_libraries(mbview PRIVATE OpenGL::GL OpenGL::GLU mbio Motif::Motif X11::X11 X11::Xt)
 
 install(TARGETS mbview DESTINATION ${CMAKE_INSTALL_LIBDIR})

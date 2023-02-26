@@ -16,6 +16,7 @@ add_library(
   mbbs_wrhdrfields.c
   mbbs_wrsampflags.c)
 
+set_target_properties(mbbsio PROPERTIES VERSION "0" SOVERSION "0")
 target_include_directories(mbbsio PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(mbbsio PRIVATE TIRPC::TIRPC)
 

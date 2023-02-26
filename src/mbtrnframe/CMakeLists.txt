@@ -20,4 +20,4 @@ target_include_directories(mframe PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/usr
                                          ${CMAKE_CURRENT_SOURCE_DIR}/mframe/src)
 target_link_libraries(mframe)
 
-install(TARGETS mframe mframe DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS mframe DESTINATION ${CMAKE_INSTALL_LIBDIR})
